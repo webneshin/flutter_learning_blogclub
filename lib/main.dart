@@ -33,7 +33,7 @@ class MainApp extends StatelessWidget {
                 color: secondaryTextColor,
                 fontSize: 12)),
       ),
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }
@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(32, 16, 32, 0),
+                padding: const EdgeInsets.fromLTRB(32, 16, 32, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -61,7 +61,7 @@ class HomeScreen extends StatelessWidget {
                       'Hi, webneshin!',
                       style: theme.textTheme.titleMedium,
                     ),
-                    Badge(
+                    const Badge(
                       textStyle: TextStyle(fontSize: 8),
                       label: Text("1"),
                       backgroundColor: Colors.deepOrange,
@@ -71,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(32, 0, 0, 24),
+                padding: const EdgeInsets.fromLTRB(32, 0, 0, 24),
                 child: Text(
                   "Explore Today's",
                   style: theme.textTheme.headlineSmall,
@@ -84,11 +84,11 @@ class HomeScreen extends StatelessWidget {
                     physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: stories.length,
                     scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.fromLTRB(32, 0, 32, 0),
+                    padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
                     itemBuilder: (context, index) {
                       final story = stories[index];
                       return Container(
-                        margin: EdgeInsets.fromLTRB(4, 0, 4, 0),
+                        margin: const EdgeInsets.fromLTRB(4, 0, 4, 0),
                         child: Column(
                           children: [
                             Stack(
@@ -104,12 +104,12 @@ class HomeScreen extends StatelessWidget {
                                         Color(0xff9CECFB),
                                       ], begin: Alignment.topLeft)),
                                   child: Container(
-                                    margin: EdgeInsets.all(3),
+                                    margin: const EdgeInsets.all(3),
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius:
                                             BorderRadius.circular(20)),
-                                    padding: EdgeInsets.all(4),
+                                    padding: const EdgeInsets.all(4),
                                     child: ClipRRect(
                                         borderRadius: BorderRadius.circular(16),
                                         child: Image.asset(
@@ -126,7 +126,7 @@ class HomeScreen extends StatelessWidget {
                                     ))
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
                             Text(
