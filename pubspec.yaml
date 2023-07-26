@@ -17,3 +17,14 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/img/icons/
+    - assets/img/posts/large/
+    - assets/img/posts/small/
+    - assets/img/stories/
+  fonts:
+    - family: avenger
+      fonts:
+        - asset: assets/fonts/avenir_regular.otf
+        - asset: assets/fonts/avenir_bold.otf
+          weight: 700
