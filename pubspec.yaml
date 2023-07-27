@@ -25,6 +25,11 @@ flutter:
   fonts:
     - family: avenger
       fonts:
-        - asset: assets/fonts/avenir_regular.otf
-        - asset: assets/fonts/avenir_bold.otf
+        - asset: assets/fonts/AvenirLTProBook.otf
+          weight: 200
+        - asset: assets/fonts/AvenirLTProRoman.otf
+          weight: 300
+        - asset: assets/fonts/AvenirLTProMedium.otf
+          weight: 400
+        - asset: assets/fonts/AvenirLTProHeavy.otf
           weight: 700
