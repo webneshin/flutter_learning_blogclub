@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:blog_club/data.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
@@ -34,9 +37,18 @@ class MainApp extends StatelessWidget {
                 color: secondaryTextColor,
                 fontSize: 12)),
       ),
+      scrollBehavior: MyCustomScrollBehavior(),
       home: const HomeScreen(),
     );
   }
+}
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
 }
 
 class HomeScreen extends StatelessWidget {
@@ -78,11 +90,98 @@ class HomeScreen extends StatelessWidget {
                   style: theme.textTheme.headlineSmall,
                 ),
               ),
-              _StoryList(stories: stories, theme: theme)
+              _StoryList(stories: stories, theme: theme),
+              SizedBox(
+                height: 16,
+              ),
+              _CategoryList()
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _CategoryList extends StatelessWidget {
+  const _CategoryList({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final categories = AppDatabase.categories;
+    return CarouselSlider.builder(
+      itemCount: categories.length,
+      itemBuilder: (context, index, realIndex) {
+        return _CategoryItem(
+          category: categories[realIndex],
+        );
+      },
+      options: CarouselOptions(
+          scrollDirection: Axis.horizontal,
+          viewportFraction: 0.8,
+          aspectRatio: 1.2,
+          initialPage: 0,
+          // padEnds: false,
+          scrollPhysics: BouncingScrollPhysics(),
+          disableCenter: true,
+          enableInfiniteScroll: false,
+          enlargeCenterPage: true,
+          // enlargeFactor: 0.4,
+          enlargeStrategy: CenterPageEnlargeStrategy.zoom),
+    );
+  }
+}
+
+class _CategoryItem extends StatelessWidget {
+  final Category category;
+
+  const _CategoryItem({super.key, required this.category});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned.fill(
+            top: 100,
+            right: 65,
+            left: 65,
+            bottom: 24,
+            child: Container(
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(blurRadius: 20, color: Color(0xaa0D253C))
+              ]),
+            )),
+        Container(
+          margin: const EdgeInsets.fromLTRB(8, 0, 8, 32),
+          decoration: BoxDecoration(
+              color: Colors.blue, borderRadius: BorderRadius.circular(32)),
+          foregroundDecoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(32),
+              gradient: const LinearGradient(
+                  colors: [Color(0xff0D253C), Colors.transparent],
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.center)),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(32),
+            child: Image.asset(
+                'assets/img/posts/large/${category.imageFileName}',
+                fit: BoxFit.cover),
+          ),
+        ),
+        Positioned(
+          bottom: 42,
+          left: 32,
+          child: Text(
+            category.title,
+            style: Theme.of(context).textTheme.headlineSmall!.apply(
+                  color: Colors.white,
+                  fontSizeFactor: 0.8,
+                ),
+          ),
+        )
+      ],
     );
   }
 }
@@ -133,7 +232,7 @@ class _Story extends StatelessWidget {
         children: [
           Stack(
             children: [
-              story.isViewed?_profileImageViewed():_profileImageNormal(),
+              story.isViewed ? _profileImageViewed() : _profileImageNormal(),
               Positioned(
                   bottom: 0,
                   right: 0,
@@ -187,7 +286,7 @@ class _Story extends StatelessWidget {
         color: Color(0xff7B8BB2),
         radius: const Radius.circular(24),
         padding: const EdgeInsets.all(7),
-        dashPattern: const [8,3],
+        dashPattern: const [8, 3],
         child: Container(
           width: 68,
           height: 68,
@@ -203,7 +302,6 @@ class _Story extends StatelessWidget {
   Widget _profileImage() {
     return ClipRRect(
         borderRadius: BorderRadius.circular(17),
-
         child: Image.asset('assets/img/stories/${story.imageFileName}'));
   }
 }
