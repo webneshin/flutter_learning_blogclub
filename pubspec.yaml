@@ -23,7 +23,7 @@ flutter:
     - assets/img/posts/small/
     - assets/img/stories/
   fonts:
-    - family: avenger
+    - family: avenir
       fonts:
         - asset: assets/fonts/AvenirLTProBook.otf
           weight: 200

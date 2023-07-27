@@ -77,70 +77,102 @@ class HomeScreen extends StatelessWidget {
                   style: theme.textTheme.headlineSmall,
                 ),
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 110,
-                child: ListView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: stories.length,
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
-                    itemBuilder: (context, index) {
-                      final story = stories[index];
-                      return Container(
-                        margin: const EdgeInsets.fromLTRB(4, 0, 4, 0),
-                        child: Column(
-                          children: [
-                            Stack(
-                              children: [
-                                Container(
-                                  width: 68,
-                                  height: 68,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(24),
-                                      gradient: const LinearGradient(colors: [
-                                        Color(0xff376AED),
-                                        Color(0xff49B0E2),
-                                        Color(0xff9CECFB),
-                                      ], begin: Alignment.topLeft)),
-                                  child: Container(
-                                    margin: const EdgeInsets.all(3),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    padding: const EdgeInsets.all(4),
-                                    child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(16),
-                                        child: Image.asset(
-                                            'assets/img/stories/${story.imageFileName}')),
-                                  ),
-                                ),
-                                Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    child: Image.asset(
-                                      'assets/img/icons/${story.iconFileName}',
-                                      width: 24,
-                                      height: 24,
-                                    ))
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              story.name,
-                              style: theme.textTheme.bodySmall,
-                            )
-                          ],
-                        ),
-                      );
-                    }),
-              )
+              _StoryList(stories: stories, theme: theme)
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _StoryList extends StatelessWidget {
+  const _StoryList({
+    super.key,
+    required this.stories,
+    required this.theme,
+  });
+
+  final List<StoryData> stories;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 110,
+      child: ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          itemCount: stories.length,
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
+          itemBuilder: (context, index) {
+            final story = stories[index];
+            return _Story(story: story, theme: theme);
+          }),
+    );
+  }
+}
+
+class _Story extends StatelessWidget {
+  const _Story({
+    super.key,
+    required this.story,
+    required this.theme,
+  });
+
+  final StoryData story;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              Container(
+                width: 68,
+                height: 68,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(24),
+                    gradient: const LinearGradient(colors: [
+                      Color(0xff376AED),
+                      Color(0xff49B0E2),
+                      Color(0xff9CECFB),
+                    ], begin: Alignment.topLeft)),
+                child: Container(
+                  margin: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          BorderRadius.circular(22)),
+                  padding: const EdgeInsets.all(5),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(17),
+                      child: Image.asset(
+                          'assets/img/stories/${story.imageFileName}')),
+                ),
+              ),
+              Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Image.asset(
+                    'assets/img/icons/${story.iconFileName}',
+                    width: 24,
+                    height: 24,
+                  ))
+            ],
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          Text(
+            story.name,
+            style: theme.textTheme.bodySmall,
+          )
+        ],
       ),
     );
   }
