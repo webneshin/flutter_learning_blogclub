@@ -27,6 +27,8 @@ flutter:
     - assets/img/posts/large/
     - assets/img/posts/small/
     - assets/img/stories/
+    - assets/img/background/
+
   fonts:
     - family: avenir
       fonts:
