@@ -4,8 +4,15 @@ import 'package:blog_club/data.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.white,
+    statusBarIconBrightness: Brightness.dark,
+    systemNavigationBarColor: Colors.white,
+    systemNavigationBarIconBrightness: Brightness.dark
+  ));
   runApp(const MainApp());
 }
 
@@ -45,7 +52,17 @@ class MainApp extends StatelessWidget {
                 fontSize: 12)),
       ),
       scrollBehavior: MyCustomScrollBehavior(),
-      home: const HomeScreen(),
+      home: Stack(
+        children: [
+          const Positioned.fill(child: HomeScreen()),
+          Positioned(
+            child: _BottomNavigation(),
+            bottom: 0,
+            left: 0,
+            right: 0,
+          )
+        ],
+      ),
     );
   }
 }
@@ -104,7 +121,9 @@ class HomeScreen extends StatelessWidget {
               ),
               const _CategoryList(),
               _PostList(),
-              const SizedBox(height: 32,)
+              const SizedBox(
+                height: 32,
+              )
             ],
           ),
         ),
@@ -430,9 +449,13 @@ class _Post extends StatelessWidget {
                       ),
                       Expanded(
                           child: Container(
-                            alignment: AlignmentDirectional.centerEnd,
-                              child: Icon(post.isBookmarked?Icons.bookmark:Icons.bookmark_border,
-                                  color: MainApp.secondaryTextColor, size: 12))),
+                              alignment: AlignmentDirectional.centerEnd,
+                              child: Icon(
+                                  post.isBookmarked
+                                      ? Icons.bookmark
+                                      : Icons.bookmark_border,
+                                  color: MainApp.secondaryTextColor,
+                                  size: 12))),
                     ],
                   )
                 ],
@@ -441,6 +464,111 @@ class _Post extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class _BottomNavigation extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 85,
+      child: Stack(
+        children: [
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 65,
+              decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                BoxShadow(
+                    blurRadius: 20, color: const Color(0xff9B8487).withOpacity(0.3))
+              ]),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _BottomNavigationItem(
+                    icon: Icons.home,
+                    active: true,
+                    name: "Home",
+                  ),
+                  _BottomNavigationItem(
+                    icon: Icons.menu_book,
+                    active: false,
+                    name: "Article",
+                  ),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  _BottomNavigationItem(
+                    icon: Icons.search,
+                    active: false,
+                    name: "Search",
+                  ),
+                  _BottomNavigationItem(
+                    icon: Icons.menu,
+                    active: false,
+                    name: "Menu",
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Center(
+            child: Container(
+              width: 55,
+              height: 85,
+              alignment: Alignment.topCenter,
+              child: Container(
+                height: 55,
+                width: 55,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Colors.white,
+                        width: 4,
+                        strokeAlign: BorderSide.strokeAlignOutside
+                    ),
+                    color: const Color(0xff376AED),
+                    borderRadius: BorderRadius.circular(55 / 2)),
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white70,
+                  size: 36,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _BottomNavigationItem extends StatelessWidget {
+  final IconData icon;
+  final bool active;
+  final String name;
+
+  const _BottomNavigationItem(
+      {super.key,
+      required this.icon,
+      required this.active,
+      required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    final color = active?Colors.blue:Colors.grey;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon,size: 28,color: color,),
+        const SizedBox(height: 4),
+        Text(
+          name,
+          style: Theme.of(context).textTheme.bodySmall?.apply(color: color),
+        )
+      ],
     );
   }
 }
