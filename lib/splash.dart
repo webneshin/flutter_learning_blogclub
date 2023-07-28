@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:blog_club/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,12 @@ class _SplashScreenState extends State<SplashScreen> {
           Positioned.fill(
               child: Assets.img.background.splash.image(fit: BoxFit.cover)),
           Center(
-            child: Assets.img.icons.logo.svg(width: 100),
+            child: SlideInUp(
+              child: FadeIn(
+                  child: Assets.img.icons.logo.svg(width: 100),
+                  duration: Duration(seconds: 2),
+              ),
+            ),
           )
         ],
       ),
