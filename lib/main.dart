@@ -13,6 +13,7 @@ class MainApp extends StatelessWidget {
   static const defaultFontFamily = "avenir";
   static const primaryTextColor = Color(0xff0D253C);
   static const secondaryTextColor = Color(0xff2D4379);
+  static const primaryColor = Color(0xff376AED);
 
   const MainApp({super.key});
 
@@ -23,6 +24,12 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        textButtonTheme: TextButtonThemeData(
+            style: ButtonStyle(
+                textStyle: MaterialStateProperty.all(const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: defaultFontFamily)))),
         textTheme: const TextTheme(
             headlineSmall: TextStyle(
                 color: primaryTextColor,
@@ -61,6 +68,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,10 +99,12 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               _StoryList(stories: stories, theme: theme),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
-              _CategoryList()
+              const _CategoryList(),
+              _PostList(),
+              const SizedBox(height: 32,)
             ],
           ),
         ),
@@ -124,7 +134,7 @@ class _CategoryList extends StatelessWidget {
           aspectRatio: 1.2,
           initialPage: 0,
           // padEnds: false,
-          scrollPhysics: BouncingScrollPhysics(),
+          scrollPhysics: const BouncingScrollPhysics(),
           disableCenter: true,
           enableInfiniteScroll: false,
           enlargeCenterPage: true,
@@ -149,7 +159,7 @@ class _CategoryItem extends StatelessWidget {
             left: 65,
             bottom: 24,
             child: Container(
-              decoration: BoxDecoration(boxShadow: [
+              decoration: const BoxDecoration(boxShadow: [
                 BoxShadow(blurRadius: 20, color: Color(0xaa0D253C))
               ]),
             )),
@@ -283,7 +293,7 @@ class _Story extends StatelessWidget {
       child: DottedBorder(
         borderType: BorderType.RRect,
         strokeWidth: 2,
-        color: Color(0xff7B8BB2),
+        color: const Color(0xff7B8BB2),
         radius: const Radius.circular(24),
         padding: const EdgeInsets.all(7),
         dashPattern: const [8, 3],
@@ -303,5 +313,134 @@ class _Story extends StatelessWidget {
     return ClipRRect(
         borderRadius: BorderRadius.circular(17),
         child: Image.asset('assets/img/stories/${story.imageFileName}'));
+  }
+}
+
+class _PostList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final posts = AppDatabase.posts;
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 32, right: 24),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Last News",
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    "More",
+                    style: TextStyle(color: Color(0xff376AED)),
+                  ))
+            ],
+          ),
+        ),
+        ListView.builder(
+          itemCount: posts.length,
+          itemExtent: 141,
+          shrinkWrap: true,
+          physics: const ClampingScrollPhysics(),
+          itemBuilder: (context, index) {
+            final post = posts[index];
+            return _Post(post: post);
+          },
+        )
+      ],
+    );
+  }
+}
+
+class _Post extends StatelessWidget {
+  const _Post({
+    super.key,
+    required this.post,
+  });
+
+  final PostData post;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // height: 149,
+      margin: const EdgeInsets.fromLTRB(32, 8, 32, 8),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: const [
+            BoxShadow(blurRadius: 10, color: Color(0x1a5282FF)),
+          ]),
+      child: Row(
+        children: [
+          ClipRRect(
+            child: Image.asset('assets/img/posts/small/${post.imageFileName}'),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    post.caption,
+                    style: const TextStyle(
+                      fontFamily: MainApp.defaultFontFamily,
+                      color: Color(0xff376AED),
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                    ),
+                  ),
+                  Text(
+                    post.title,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.thumb_up,
+                          color: MainApp.secondaryTextColor, size: 12),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        post.likes,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      const Icon(Icons.schedule,
+                          color: MainApp.secondaryTextColor, size: 12),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        post.time,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      Expanded(
+                          child: Container(
+                            alignment: AlignmentDirectional.centerEnd,
+                              child: Icon(post.isBookmarked?Icons.bookmark:Icons.bookmark_border,
+                                  color: MainApp.secondaryTextColor, size: 12))),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
