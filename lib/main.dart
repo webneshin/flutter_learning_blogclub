@@ -1,19 +1,15 @@
 import 'dart:ui';
 
-import 'package:blog_club/data.dart';
 import 'package:blog_club/splash.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.white,
-    statusBarIconBrightness: Brightness.dark,
-    systemNavigationBarColor: Colors.white,
-    systemNavigationBarIconBrightness: Brightness.dark
-  ));
+      statusBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark));
   runApp(const MainApp());
 }
 
@@ -31,7 +27,15 @@ class MainApp extends StatelessWidget {
       title: 'Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: const ColorScheme.light(
+          primary: primaryColor,
+          onPrimary: Colors.white,
+          surface: Colors.white,
+          onSurface: primaryTextColor,
+          background: Color(0xffFBFCFF),
+          onBackground: primaryTextColor,
+
+        ),
         textButtonTheme: TextButtonThemeData(
             style: ButtonStyle(
                 textStyle: MaterialStateProperty.all(const TextStyle(
@@ -92,7 +96,8 @@ class _BottomNavigation extends StatelessWidget {
               height: 65,
               decoration: BoxDecoration(color: Colors.white, boxShadow: [
                 BoxShadow(
-                    blurRadius: 20, color: const Color(0xff9B8487).withOpacity(0.3))
+                    blurRadius: 20,
+                    color: const Color(0xff9B8487).withOpacity(0.3))
               ]),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -136,8 +141,7 @@ class _BottomNavigation extends StatelessWidget {
                     border: Border.all(
                         color: Colors.white,
                         width: 4,
-                        strokeAlign: BorderSide.strokeAlignOutside
-                    ),
+                        strokeAlign: BorderSide.strokeAlignOutside),
                     color: const Color(0xff376AED),
                     borderRadius: BorderRadius.circular(55 / 2)),
                 child: const Icon(
@@ -167,11 +171,15 @@ class _BottomNavigationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = active?Colors.blue:Colors.grey;
+    final color = active ? Colors.blue : Colors.grey;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(icon,size: 28,color: color,),
+        Icon(
+          icon,
+          size: 28,
+          color: color,
+        ),
         const SizedBox(height: 4),
         Text(
           name,

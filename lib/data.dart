@@ -142,4 +142,24 @@ class AppDatabase {
           imageFileName: 'small_post_3.jpg'),
     ];
   }
+
+  static List<OnBoardingItem> get onBoardingItems {
+    return [
+      OnBoardingItem("Read the article you want instantly 1",
+          "Read the article you want instantly Read the article you want instantly Read the article you want instantly"),
+      OnBoardingItem("Read the article you want instantly 2",
+          "Read the article you want instantly Read the article you want instantly Read the article you want instantly"),
+      OnBoardingItem("Read the article you want instantly 3",
+          "Read the article you want instantly Read the article you want instantly Read the article you want instantly"),
+      OnBoardingItem("Read the article you want instantly 4",
+          "Read the article you want instantly Read the article you want instantly Read the article you want instantly")
+    ];
+  }
+}
+
+class OnBoardingItem {
+  final String title;
+  final String description;
+
+  OnBoardingItem(this.title, this.description);
 }
