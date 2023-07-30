@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:blog_club/splash.dart';
+import 'package:blog_club/article.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -27,6 +27,15 @@ class MainApp extends StatelessWidget {
       title: 'Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        snackBarTheme: SnackBarThemeData(
+          backgroundColor: primaryColor,
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: primaryTextColor,
+          // elevation: 0,
+          titleSpacing: 32,
+        ),
         colorScheme: const ColorScheme.light(
           primary: primaryColor,
           onPrimary: Colors.white,
@@ -68,7 +77,7 @@ class MainApp extends StatelessWidget {
       //     )
       //   ],
       // ),
-      home: const SplashScreen(),
+      home: const ArticleScreen(),
     );
   }
 }
