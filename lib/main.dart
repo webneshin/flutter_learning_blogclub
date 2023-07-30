@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:blog_club/article.dart';
+import 'package:blog_club/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -77,7 +78,7 @@ class MainApp extends StatelessWidget {
       //     )
       //   ],
       // ),
-      home: const ArticleScreen(),
+      home: const ProfileScreen(),
     );
   }
 }
