@@ -129,13 +129,12 @@ class _MainScreenState extends State<MainScreen> {
     if (currentSelectedTabNavigatorState.canPop()) {
       currentSelectedTabNavigatorState.pop();
       return false;
-    }else if (_history.isNotEmpty){
+    } else if (_history.isNotEmpty) {
       setState(() {
-        selectedScreenIndex=_history.last;
+        selectedScreenIndex = _history.last;
         _history.removeLast();
       });
       return false;
-
     }
 
     return true;
@@ -153,30 +152,11 @@ class _MainScreenState extends State<MainScreen> {
               child: IndexedStack(
                 index: selectedScreenIndex,
                 children: [
-                  Navigator(
-                    key: _homeKey,
-                    onGenerateRoute: (settings) => MaterialPageRoute(
-                      builder: (context) => HomeScreen(),
-                    ),
-                  ),
-                  Navigator(
-                    key: _articleKey,
-                    onGenerateRoute: (settings) => MaterialPageRoute(
-                      builder: (context) => ArticleScreen(),
-                    ),
-                  ),
-                  Navigator(
-                    key: _searchKey,
-                    onGenerateRoute: (settings) => MaterialPageRoute(
-                      builder: (context) => SearchScreen(),
-                    ),
-                  ),
-                  Navigator(
-                    key: _menuKey,
-                    onGenerateRoute: (settings) => MaterialPageRoute(
-                      builder: (context) => ProfileScreen(),
-                    ),
-                  ),
+                  _buildNavigator(_homeKey,Pages.home,HomeScreen()),
+                  _buildNavigator(_articleKey,Pages.article,ArticleScreen()),
+                  _buildNavigator(_searchKey,Pages.search,SearchScreen()),
+                  _buildNavigator(_menuKey,Pages.menu,ProfileScreen()),
+
                   // const HomeScreen(),
                   // const ArticleScreen(),
                   // const SearchScreen(),
@@ -203,6 +183,18 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildNavigator(key,pageType,child) {
+    return Navigator(
+                  key: key,
+                  onGenerateRoute: (settings) => MaterialPageRoute(
+                    builder: (context) => Offstage(
+                      child: child,
+                      offstage: selectedScreenIndex != pageType,
+                    ),
+                  ),
+                );
   }
 }
 
