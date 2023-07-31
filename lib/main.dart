@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:ui';
 
 import 'package:blog_club/article.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 const double bottomNavigationHeight = 65.0;
+
 class Pages {
   static const int home = 0;
   static const int article = 1;
@@ -107,8 +107,6 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-
-
 class _MainScreenState extends State<MainScreen> {
   int selectedScreenIndex = Pages.home;
 
@@ -122,10 +120,30 @@ class _MainScreenState extends State<MainScreen> {
             child: IndexedStack(
               index: selectedScreenIndex,
               children: [
-                const HomeScreen(),
-                const ArticleScreen(),
-                const SearchScreen(),
-                const ProfileScreen(),
+                Navigator(
+                  onGenerateRoute: (settings) => MaterialPageRoute(
+                    builder: (context) => HomeScreen(),
+                  ),
+                ),
+                Navigator(
+                  onGenerateRoute: (settings) => MaterialPageRoute(
+                    builder: (context) => ArticleScreen(),
+                  ),
+                ),
+                Navigator(
+                  onGenerateRoute: (settings) => MaterialPageRoute(
+                    builder: (context) => SearchScreen(),
+                  ),
+                ),
+                Navigator(
+                  onGenerateRoute: (settings) => MaterialPageRoute(
+                    builder: (context) => ProfileScreen(),
+                  ),
+                ),
+                // const HomeScreen(),
+                // const ArticleScreen(),
+                // const SearchScreen(),
+                // const ProfileScreen(),
               ],
             ),
           ),
@@ -206,7 +224,7 @@ class _BottomNavigation extends StatelessWidget {
                     },
                   ),
                   const SizedBox(
-                    width: 12,
+                    width: 24,
                   ),
                   _BottomNavigationItem(
                     icon: Icons.search,

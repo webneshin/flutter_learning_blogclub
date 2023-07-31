@@ -1,3 +1,4 @@
+import 'package:blog_club/article.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -316,84 +317,92 @@ class Post extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // height: 149,
-      margin: const EdgeInsets.fromLTRB(32, 8, 32, 8),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: const [
-            BoxShadow(blurRadius: 10, color: Color(0x1a5282FF)),
-          ]),
-      child: Row(
-        children: [
-          ClipRRect(
-            child: Image.asset('assets/img/posts/small/${post.imageFileName}',width: 100,),
+    return InkWell(
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ArticleScreen(),
+      )),
+      child: Container(
+        // height: 149,
+        margin: const EdgeInsets.fromLTRB(32, 8, 32, 8),
+        decoration: BoxDecoration(
+            color: Colors.white,
             borderRadius: BorderRadius.circular(16),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    post.caption,
-                    style: const TextStyle(
-                      fontFamily: MainApp.defaultFontFamily,
-                      color: Color(0xff376AED),
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                    ),
-                  ),
-                  Text(
-                    post.title,
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.thumb_up,
-                          color: MainApp.secondaryTextColor, size: 12),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        post.likes,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      const Icon(Icons.schedule,
-                          color: MainApp.secondaryTextColor, size: 12),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        post.time,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      Expanded(
-                          child: Container(
-                              alignment: AlignmentDirectional.centerEnd,
-                              child: Icon(
-                                  post.isBookmarked
-                                      ? Icons.bookmark
-                                      : Icons.bookmark_border,
-                                  color: MainApp.secondaryTextColor,
-                                  size: 12))),
-                    ],
-                  )
-                ],
+            boxShadow: const [
+              BoxShadow(blurRadius: 10, color: Color(0x1a5282FF)),
+            ]),
+        child: Row(
+          children: [
+            ClipRRect(
+              child: Image.asset(
+                'assets/img/posts/small/${post.imageFileName}',
+                width: 100,
               ),
+              borderRadius: BorderRadius.circular(16),
             ),
-          )
-        ],
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      post.caption,
+                      style: const TextStyle(
+                        fontFamily: MainApp.defaultFontFamily,
+                        color: Color(0xff376AED),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      post.title,
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.thumb_up,
+                            color: MainApp.secondaryTextColor, size: 12),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          post.likes,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        const Icon(Icons.schedule,
+                            color: MainApp.secondaryTextColor, size: 12),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          post.time,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        Expanded(
+                            child: Container(
+                                alignment: AlignmentDirectional.centerEnd,
+                                child: Icon(
+                                    post.isBookmarked
+                                        ? Icons.bookmark
+                                        : Icons.bookmark_border,
+                                    color: MainApp.secondaryTextColor,
+                                    size: 12))),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
