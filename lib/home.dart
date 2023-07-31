@@ -298,7 +298,7 @@ class _PostList extends StatelessWidget {
           physics: const ClampingScrollPhysics(),
           itemBuilder: (context, index) {
             final post = posts[index];
-            return _Post(post: post);
+            return Post(post: post);
           },
         )
       ],
@@ -306,8 +306,8 @@ class _PostList extends StatelessWidget {
   }
 }
 
-class _Post extends StatelessWidget {
-  const _Post({
+class Post extends StatelessWidget {
+  const Post({
     super.key,
     required this.post,
   });
@@ -328,7 +328,7 @@ class _Post extends StatelessWidget {
       child: Row(
         children: [
           ClipRRect(
-            child: Image.asset('assets/img/posts/small/${post.imageFileName}'),
+            child: Image.asset('assets/img/posts/small/${post.imageFileName}',width: 100,),
             borderRadius: BorderRadius.circular(16),
           ),
           Expanded(
