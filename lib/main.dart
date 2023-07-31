@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:ui';
 
 import 'package:blog_club/article.dart';
@@ -5,6 +6,14 @@ import 'package:blog_club/home.dart';
 import 'package:blog_club/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+const double bottomNavigationHeight = 65.0;
+class Pages {
+  static const int home = 0;
+  static const int article = 1;
+  static const int search = 2;
+  static const int menu = 3;
+}
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -98,12 +107,7 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class Pages {
-  static const int home = 0;
-  static const int article = 1;
-  static const int search = 2;
-  static const int menu = 3;
-}
+
 
 class _MainScreenState extends State<MainScreen> {
   int selectedScreenIndex = Pages.home;
@@ -111,21 +115,33 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: _BottomNavigation(
-        onTap: (index) {
-          setState(() {
-            selectedScreenIndex = index;
-          });
-        },
-        selectedIndex: selectedScreenIndex,
-      ),
-      body: IndexedStack(
-        index: selectedScreenIndex,
+      body: Stack(
         children: [
-          const HomeScreen(),
-          const ArticleScreen(),
-          const SearchScreen(),
-          const ProfileScreen(),
+          Positioned.fill(
+            bottom: bottomNavigationHeight,
+            child: IndexedStack(
+              index: selectedScreenIndex,
+              children: [
+                const HomeScreen(),
+                const ArticleScreen(),
+                const SearchScreen(),
+                const ProfileScreen(),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            left: 0,
+            child: _BottomNavigation(
+              onTap: (index) {
+                setState(() {
+                  selectedScreenIndex = index;
+                });
+              },
+              selectedIndex: selectedScreenIndex,
+            ),
+          )
         ],
       ),
     );
@@ -164,7 +180,7 @@ class _BottomNavigation extends StatelessWidget {
             left: 0,
             right: 0,
             child: Container(
-              height: 65,
+              height: bottomNavigationHeight,
               decoration: BoxDecoration(color: Colors.white, boxShadow: [
                 BoxShadow(
                     blurRadius: 20,
@@ -175,7 +191,7 @@ class _BottomNavigation extends StatelessWidget {
                 children: [
                   _BottomNavigationItem(
                     icon: Icons.home,
-                    active: selectedIndex==Pages.home,
+                    active: selectedIndex == Pages.home,
                     name: "Home",
                     onTap: () {
                       onTap(Pages.home);
@@ -183,7 +199,7 @@ class _BottomNavigation extends StatelessWidget {
                   ),
                   _BottomNavigationItem(
                     icon: Icons.menu_book,
-                    active: selectedIndex==Pages.article,
+                    active: selectedIndex == Pages.article,
                     name: "Article",
                     onTap: () {
                       onTap(Pages.article);
@@ -194,7 +210,7 @@ class _BottomNavigation extends StatelessWidget {
                   ),
                   _BottomNavigationItem(
                     icon: Icons.search,
-                    active: selectedIndex==Pages.search,
+                    active: selectedIndex == Pages.search,
                     name: "Search",
                     onTap: () {
                       onTap(Pages.search);
@@ -202,7 +218,7 @@ class _BottomNavigation extends StatelessWidget {
                   ),
                   _BottomNavigationItem(
                     icon: Icons.menu,
-                    active: selectedIndex==Pages.menu,
+                    active: selectedIndex == Pages.menu,
                     name: "Menu",
                     onTap: () {
                       onTap(Pages.menu);
@@ -257,22 +273,24 @@ class _BottomNavigationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = active ? Colors.blue : Colors.grey;
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            size: 28,
-            color: color,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            name,
-            style: Theme.of(context).textTheme.bodySmall?.apply(color: color),
-          )
-        ],
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 28,
+              color: color,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              name,
+              style: Theme.of(context).textTheme.bodySmall?.apply(color: color),
+            )
+          ],
+        ),
       ),
     );
   }
