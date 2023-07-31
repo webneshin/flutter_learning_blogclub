@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:blog_club/article.dart';
+import 'package:blog_club/home.dart';
 import 'package:blog_club/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,10 +29,10 @@ class MainApp extends StatelessWidget {
       title: 'Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        snackBarTheme: SnackBarThemeData(
+        snackBarTheme: const SnackBarThemeData(
           backgroundColor: primaryColor,
         ),
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
           foregroundColor: primaryTextColor,
           // elevation: 0,
@@ -44,7 +45,6 @@ class MainApp extends StatelessWidget {
           onSurface: primaryTextColor,
           background: Color(0xffFBFCFF),
           onBackground: primaryTextColor,
-
         ),
         textButtonTheme: TextButtonThemeData(
             style: ButtonStyle(
@@ -78,7 +78,7 @@ class MainApp extends StatelessWidget {
       //     )
       //   ],
       // ),
-      home: const ProfileScreen(),
+      home: const MainScreen(),
     );
   }
 }
@@ -91,7 +91,62 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
       };
 }
 
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class Pages {
+  static const int home = 0;
+  static const int article = 1;
+  static const int search = 2;
+  static const int menu = 3;
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int selectedScreenIndex = Pages.home;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      bottomNavigationBar: _BottomNavigation(onTap: (index) {
+        setState(() {
+          selectedScreenIndex = index;
+        });
+      },),
+      body: IndexedStack(
+        index: selectedScreenIndex,
+        children: [
+          const HomeScreen(),
+          const ArticleScreen(),
+          const SearchScreen(),
+          const ProfileScreen(),
+        ],
+      ),
+    );
+  }
+}
+
+class SearchScreen extends StatelessWidget {
+  const SearchScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        "Search Screen",
+        style: Theme.of(context).textTheme.headlineSmall,
+      ),
+    );
+  }
+}
+
 class _BottomNavigation extends StatelessWidget {
+  final Function(int index) onTap;
+
+  const _BottomNavigation({super.key, required this.onTap});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -109,31 +164,43 @@ class _BottomNavigation extends StatelessWidget {
                     blurRadius: 20,
                     color: const Color(0xff9B8487).withOpacity(0.3))
               ]),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   _BottomNavigationItem(
                     icon: Icons.home,
                     active: true,
                     name: "Home",
+                    onTap: () {
+                      onTap(Pages.home);
+                    },
                   ),
                   _BottomNavigationItem(
                     icon: Icons.menu_book,
                     active: false,
                     name: "Article",
+                    onTap: () {
+                      onTap(Pages.article);
+                    },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 12,
                   ),
                   _BottomNavigationItem(
                     icon: Icons.search,
                     active: false,
                     name: "Search",
+                    onTap: () {
+                      onTap(Pages.search);
+                    },
                   ),
                   _BottomNavigationItem(
                     icon: Icons.menu,
                     active: false,
                     name: "Menu",
+                    onTap: () {
+                      onTap(Pages.menu);
+                    },
                   ),
                 ],
               ),
@@ -172,30 +239,35 @@ class _BottomNavigationItem extends StatelessWidget {
   final IconData icon;
   final bool active;
   final String name;
+  final Function() onTap;
 
   const _BottomNavigationItem(
       {super.key,
       required this.icon,
       required this.active,
-      required this.name});
+      required this.name,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final color = active ? Colors.blue : Colors.grey;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          icon,
-          size: 28,
-          color: color,
-        ),
-        const SizedBox(height: 4),
-        Text(
-          name,
-          style: Theme.of(context).textTheme.bodySmall?.apply(color: color),
-        )
-      ],
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 28,
+            color: color,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            name,
+            style: Theme.of(context).textTheme.bodySmall?.apply(color: color),
+          )
+        ],
+      ),
     );
   }
 }
