@@ -152,10 +152,10 @@ class _MainScreenState extends State<MainScreen> {
               child: IndexedStack(
                 index: selectedScreenIndex,
                 children: [
-                  _buildNavigator(_homeKey,Pages.home,HomeScreen()),
-                  _buildNavigator(_articleKey,Pages.article,ArticleScreen()),
-                  _buildNavigator(_searchKey,Pages.search,SearchScreen()),
-                  _buildNavigator(_menuKey,Pages.menu,ProfileScreen()),
+                  _buildNavigator(_homeKey, Pages.home, HomeScreen()),
+                  _buildNavigator(_articleKey, Pages.article, ArticleScreen()),
+                  _buildNavigator(_searchKey, Pages.search, SearchScreen()),
+                  _buildNavigator(_menuKey, Pages.menu, ProfileScreen()),
 
                   // const HomeScreen(),
                   // const ArticleScreen(),
@@ -185,16 +185,18 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _buildNavigator(key,pageType,child) {
-    return Navigator(
-                  key: key,
-                  onGenerateRoute: (settings) => MaterialPageRoute(
-                    builder: (context) => Offstage(
-                      child: child,
-                      offstage: selectedScreenIndex != pageType,
-                    ),
-                  ),
-                );
+  Widget _buildNavigator(GlobalKey key, pageType, child) {
+    return key.currentState == null && selectedScreenIndex != pageType
+        ? Container()
+        : Navigator(
+            key: key,
+            onGenerateRoute: (settings) => MaterialPageRoute(
+              builder: (context) => Offstage(
+                child: child,
+                offstage: selectedScreenIndex != pageType,
+              ),
+            ),
+          );
   }
 }
 
