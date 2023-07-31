@@ -109,58 +109,98 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int selectedScreenIndex = Pages.home;
+  final List<int> _history = [];
+
+  GlobalKey<NavigatorState> _homeKey = GlobalKey();
+  GlobalKey<NavigatorState> _articleKey = GlobalKey();
+  GlobalKey<NavigatorState> _searchKey = GlobalKey();
+  GlobalKey<NavigatorState> _menuKey = GlobalKey();
+
+  late final map = {
+    Pages.home: _homeKey,
+    Pages.article: _articleKey,
+    Pages.search: _searchKey,
+    Pages.menu: _menuKey,
+  };
+
+  Future<bool> _onWillPop() async {
+    final NavigatorState currentSelectedTabNavigatorState =
+        map[selectedScreenIndex]!.currentState!;
+    if (currentSelectedTabNavigatorState.canPop()) {
+      currentSelectedTabNavigatorState.pop();
+      return false;
+    }else if (_history.isNotEmpty){
+      setState(() {
+        selectedScreenIndex=_history.last;
+        _history.removeLast();
+      });
+      return false;
+
+    }
+
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-            bottom: bottomNavigationHeight,
-            child: IndexedStack(
-              index: selectedScreenIndex,
-              children: [
-                Navigator(
-                  onGenerateRoute: (settings) => MaterialPageRoute(
-                    builder: (context) => HomeScreen(),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Positioned.fill(
+              bottom: bottomNavigationHeight,
+              child: IndexedStack(
+                index: selectedScreenIndex,
+                children: [
+                  Navigator(
+                    key: _homeKey,
+                    onGenerateRoute: (settings) => MaterialPageRoute(
+                      builder: (context) => HomeScreen(),
+                    ),
                   ),
-                ),
-                Navigator(
-                  onGenerateRoute: (settings) => MaterialPageRoute(
-                    builder: (context) => ArticleScreen(),
+                  Navigator(
+                    key: _articleKey,
+                    onGenerateRoute: (settings) => MaterialPageRoute(
+                      builder: (context) => ArticleScreen(),
+                    ),
                   ),
-                ),
-                Navigator(
-                  onGenerateRoute: (settings) => MaterialPageRoute(
-                    builder: (context) => SearchScreen(),
+                  Navigator(
+                    key: _searchKey,
+                    onGenerateRoute: (settings) => MaterialPageRoute(
+                      builder: (context) => SearchScreen(),
+                    ),
                   ),
-                ),
-                Navigator(
-                  onGenerateRoute: (settings) => MaterialPageRoute(
-                    builder: (context) => ProfileScreen(),
+                  Navigator(
+                    key: _menuKey,
+                    onGenerateRoute: (settings) => MaterialPageRoute(
+                      builder: (context) => ProfileScreen(),
+                    ),
                   ),
-                ),
-                // const HomeScreen(),
-                // const ArticleScreen(),
-                // const SearchScreen(),
-                // const ProfileScreen(),
-              ],
+                  // const HomeScreen(),
+                  // const ArticleScreen(),
+                  // const SearchScreen(),
+                  // const ProfileScreen(),
+                ],
+              ),
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            left: 0,
-            child: _BottomNavigation(
-              onTap: (index) {
-                setState(() {
-                  selectedScreenIndex = index;
-                });
-              },
-              selectedIndex: selectedScreenIndex,
-            ),
-          )
-        ],
+            Positioned(
+              bottom: 0,
+              right: 0,
+              left: 0,
+              child: _BottomNavigation(
+                selectedIndex: selectedScreenIndex,
+                onTap: (index) {
+                  setState(() {
+                    _history.remove(selectedScreenIndex);
+                    _history.add(selectedScreenIndex);
+                    selectedScreenIndex = index;
+                  });
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
