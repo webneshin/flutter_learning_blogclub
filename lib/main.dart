@@ -111,11 +111,14 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: _BottomNavigation(onTap: (index) {
-        setState(() {
-          selectedScreenIndex = index;
-        });
-      },),
+      bottomNavigationBar: _BottomNavigation(
+        onTap: (index) {
+          setState(() {
+            selectedScreenIndex = index;
+          });
+        },
+        selectedIndex: selectedScreenIndex,
+      ),
       body: IndexedStack(
         index: selectedScreenIndex,
         children: [
@@ -145,8 +148,11 @@ class SearchScreen extends StatelessWidget {
 
 class _BottomNavigation extends StatelessWidget {
   final Function(int index) onTap;
+  final int selectedIndex;
 
-  const _BottomNavigation({super.key, required this.onTap});
+  const _BottomNavigation(
+      {super.key, required this.onTap, required this.selectedIndex});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -169,7 +175,7 @@ class _BottomNavigation extends StatelessWidget {
                 children: [
                   _BottomNavigationItem(
                     icon: Icons.home,
-                    active: true,
+                    active: selectedIndex==Pages.home,
                     name: "Home",
                     onTap: () {
                       onTap(Pages.home);
@@ -177,7 +183,7 @@ class _BottomNavigation extends StatelessWidget {
                   ),
                   _BottomNavigationItem(
                     icon: Icons.menu_book,
-                    active: false,
+                    active: selectedIndex==Pages.article,
                     name: "Article",
                     onTap: () {
                       onTap(Pages.article);
@@ -188,7 +194,7 @@ class _BottomNavigation extends StatelessWidget {
                   ),
                   _BottomNavigationItem(
                     icon: Icons.search,
-                    active: false,
+                    active: selectedIndex==Pages.search,
                     name: "Search",
                     onTap: () {
                       onTap(Pages.search);
@@ -196,7 +202,7 @@ class _BottomNavigation extends StatelessWidget {
                   ),
                   _BottomNavigationItem(
                     icon: Icons.menu,
-                    active: false,
+                    active: selectedIndex==Pages.menu,
                     name: "Menu",
                     onTap: () {
                       onTap(Pages.menu);
